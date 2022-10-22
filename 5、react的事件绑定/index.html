@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件实例三大状态-state</title>
+</head>
+
+<body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+        class StateComponent extends React.Component{
+        constructor(props){
+            super(props);
+            // 初始化状态
+            this.state = {isHot:false,wind:"微风不燥"};
+            this.handleState = this.handleState.bind(this);
+        }
+        render(){
+            // 读取状态
+            const {isHot,wind} = this.state;
+            return (
+                <div>
+                    <button onClick={this.handleState}>点击</button>
+                    <h2 className="text" >今天天气很{isHot?'炎热':'寒冷'}，{wind}</h2>
+                </div>
+            )     
+        }
+        handleState(){
+            /*
+                1、handleState放在哪里？StateComponent的原型对象上，供实例使用。
+                2、由于handleState是作为onClick的回调，所以不是通过实例调用的，是直接调用。
+                3、类里面自动开启严格模式（use strict），所以this是undefined
+            */ 
+
+            /*
+                1、react不能直接修改state（状态）。要借助内置的Api去更改；
+                2、更新状态是合并不是替换；
+            */  
+            const {isHot} = this.state;
+            this.setState({
+                isHot : !isHot
+            })
+        }
+       };
+       ReactDOM.render(<StateComponent />,document.getElementById("box"));
+    </script>
+
+</body>
+<style>
+    .text {
+        color: red;
+    }
+</style>
+
+</html>
