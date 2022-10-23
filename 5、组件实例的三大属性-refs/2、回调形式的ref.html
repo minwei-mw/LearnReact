@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>回调形式的ref</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class RefComponent extends React.Component {
+        render() {
+          return (
+            /*
+              1、回调形式的ref执行过程？
+                把ref所处的当前节点。挂在了实例自身上，并取名为input1
+            */ 
+
+            <div>
+              <input ref={(currentNode)=>{ this.input1 = currentNode}} type="text" placeholder="按钮信息" />
+              &nbsp;
+              <button onClick={this.showInput}>点我提示左侧数据</button>&nbsp;
+              <input onBlur={this.blurInput} ref={v => this.input2 = v} typet="text" placeholder="失焦数据" />
+            </div>
+          );
+        };
+        showInput = ()=>{
+          console.log(this)
+            const {input1} = this;
+            alert(input1.value)
+        };
+        blurInput = ()=>{
+            alert(this.input2.value)
+        }
+      }
+      ReactDOM.render(<RefComponent/>,document.getElementById("box"))
+    </script>
+  </body>
+</html>

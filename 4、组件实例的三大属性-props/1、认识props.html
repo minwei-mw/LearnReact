@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>认识props</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+    <!-- 引入prop-type，用于组件标签属性进行限制 -->
+    <script src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+      class RenderList extends React.Component {
+        render() {
+           // props是只读的，不能更改
+          const { name, sex, age } = this.props;
+          return (
+            <ul
+              style={{
+                margin: "20px",
+                border: "1px solid black",
+                width: "50% ",
+              }}
+            >
+              <li>姓名：{name}</li>
+              <li>性别：{sex}</li>
+              <li>年龄：{age}</li>
+            </ul>
+          );
+        }
+      }
+      //   对标签属性进行类型、必要性的限制
+      RenderList.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number.isRequired,
+        // open:PropTypes.func (限制open为函数)
+      };
+      //   指定默认标签属性值
+      RenderList.defaultProps = {
+        sex: "不男不女",
+      };
+
+      const dataList = { name: "Tom", age: 18 };
+      ReactDOM.render(
+        <RenderList {...dataList} />,
+        document.getElementById("box")
+      );
+    </script>
+  </body>
+  <style></style>
+</html>
