@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>createRef()</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class CreateRefComponent extends React.Component {
+        constructor(props) {
+          super(props);
+          this.myRef = React.createRef();
+        }
+        showInput = () => {
+          const node = this.myRef.current;
+          alert(node.value);
+        };
+        blurInput = ()=>{
+          console.log(this)
+          alert(this.blurRef.current.value)
+        };
+        render() {
+          return (
+            <div>
+              <input ref={this.myRef} type="text" placeholder="左侧数据" />
+              <button onClick={this.showInput}>点我</button>
+              <input ref={this.blurRef = React.createRef()} onBlur={this.blurInput} type="text" placeholder="右侧数据" />
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<CreateRefComponent/>,document.getElementById("box"));
+    </script>
+  </body>
+</html>
