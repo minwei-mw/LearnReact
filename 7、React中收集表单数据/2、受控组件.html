@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>受控组件</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class Login extends React.Component {
+        state = {
+            userName:null,
+            password:null
+        }
+        render() {
+          return (
+            <form onSubmit={this.handleSubmit}>
+              用户名： <input onChange={this.changeName} type="text" placeholder="用户名" name="userName"/>
+              密码： <input onChange={this.changePassword} type="password" placeholder="密码" name="password"/>
+              <button>登陆</button>
+            </form>
+          );
+        }
+        handleSubmit = (event)=>{
+          event.preventDefault();
+          const {userName,password} = this.state;
+          alert(`用户名为${userName},密码为${password}`);
+        };
+        changeName = (event)=>{
+            this.setState({
+                userName : event.target.value
+            })
+        };
+        changePassword =(event)=>{
+            this.setState({
+                password :event.target.value
+            })
+        }
+      }
+      ReactDOM.render(<Login />, document.getElementById("box"));
+    </script>
+  </body>
+</html>
