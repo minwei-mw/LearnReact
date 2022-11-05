@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3、react子组件生命周期函数</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class A extends React.Component {
+        state = { carName: "本田" };
+        render() {
+          const { carName } = this.state;
+          return (
+            <div>
+              我是组件A,{carName}
+              <button onClick={this.changeCar}>我要换车</button>
+              <B carName={carName} />
+            </div>
+          );
+        }
+        changeCar = () => {
+          this.setState({ carName: "宝马" });
+        };
+      }
+      class B extends React.Component {
+        render() {
+          console.log("B---render");
+          const { carName } = this.props;
+          return <div>我是组件B，我的车是：{carName}</div>;
+        }
+        componentWillReceiveProps() {
+          console.log("B---componentWillReceiveProps");
+        }
+        shouldComponentUpdate() {
+          console.log("B---shouldComponentUpdate");
+          return true;
+        }
+        componentWillUpdate() {
+          console.log("B---componentWillUpdate");
+        }
+        componentDidUpdate() {
+          console.log("B---componentDidMount");
+        }
+      }
+      ReactDOM.render(<A />, document.getElementById("box"));
+    </script>
+  </body>
+</html>

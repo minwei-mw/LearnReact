@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>2、react生命周期(旧)</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js//react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class Count extends React.Component {
+        // 构造器
+        constructor(props) {
+          super(props);
+          this.state = { count: 1 };
+          console.log("count---constructor");
+        }
+
+        // 将要挂载
+        componentWillMount() {
+          console.log("count---componentWillMount");
+        }
+
+        // 挂载完成
+        componentDidMount() {
+          console.log("count---componentDidMount");
+        }
+
+        // 将要卸载
+        componentWillUnmount() {
+          console.log("count---componentWillUnmount");
+        }
+
+        //控制组件更新的阀门 必须有返回值true || false
+        shouldComponentUpdate() {
+          console.log("count---shouldComponentUpdate");
+          return true;
+        }
+
+        //即将更新
+        componentWillUpdate() {
+          console.log("count---componentWillUpdate");
+        }
+
+        //更新完成
+        componentDidUpdate() {
+          console.log("count---componentDidUpdate");
+        }
+
+        add = () => {
+          const { count } = this.state;
+          this.setState({ count: count + 1 });
+        };
+
+        //卸载组件
+        unmount = () => {
+          ReactDOM.unmountComponentAtNode(document.getElementById("box"));
+        };
+
+        forceComp = () => {
+          this.forceUpdate(); 
+        };
+
+        render() {
+          console.log("count---render");
+          const { count } = this.state;
+          return (
+            <div>
+              <h2>最新的值为：{count}</h2>
+              <button onClick={this.add}>点击+1</button>
+              <button onClick={this.unmount}>卸载组件</button>
+              <button onClick={this.forceComp}>强制更新</button>
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<Count />, document.getElementById("box"));
+    </script>
+  </body>
+</html>
