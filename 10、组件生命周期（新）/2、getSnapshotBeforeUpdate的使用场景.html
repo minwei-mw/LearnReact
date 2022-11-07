@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>2、getSnapshotBeforeUpdate的使用场景</title>
+  </head>
+
+  <body>
+    <div id="box"></div>
+
+    <!-- 引入React核心库 -->
+    <script src="../js/18.2.0/react.development@18.2.0.js"></script>
+    <!-- 引入React-dom，用于支持react操作DOM -->
+    <script src="../js/18.2.0/react-dom.development@18.2.0.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script src="../js//babel.min.js"></script>
+
+    <script type="text/babel">
+      class NewsList extends React.Component {
+        state = { newsArr: [] };
+        render() {
+          const { newsArr } = this.state;
+          return (
+            <div className="list" ref={(c) => (this.listRef = c)}>
+              {newsArr.map((item, index) => {
+                return <h3 key={index}>{item}</h3>;
+              })}
+            </div>
+          );
+        }
+
+        componentDidMount() {
+          setInterval(() => {
+            const { newsArr } = this.state;
+            const name = "新闻" + (newsArr.length + 1);
+            this.setState({ newsArr: [name, ...newsArr] });
+          }, 1000);
+        }
+
+        getSnapshotBeforeUpdate(){
+            return this.listRef.scrollHeight;
+        }
+
+        componentDidUpdate(preProps,preState,snapshotVal) {
+           this.listRef.scrollTop += this.listRef.scrollHeight - snapshotVal;
+        }
+      }
+      ReactDOM.createRoot(document.getElementById("box")).render(<NewsList />);
+    </script>
+    <style>
+      .list {
+        width: 200px;
+        height: 200px;
+        background: darkcyan;
+        overflow: auto;
+      }
+      h2 {
+        height: 10px auto;
+      }
+    </style>
+  </body>
+</html>
