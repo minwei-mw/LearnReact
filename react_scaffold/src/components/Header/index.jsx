@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 import { isNull } from "../../utils/Common";
 
 import "./index.css";
 
 export default class Header extends Component {
+  static propTypes = {
+    addTodo : PropTypes.func.isRequired
+  }
   render() {
     return (
       <div className="todo-header">

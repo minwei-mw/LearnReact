@@ -9,16 +9,31 @@ export default class App extends Component {
     todos: [{ id: "001", name: "写代码", done: true }]
   }
   addTodo = (todoObj) => {
-    const {todos} = this.state;
-    const newTodo =[todoObj,...todos];
-    this.setState({todos:newTodo})
+    const { todos } = this.state;
+    const newTodo = [todoObj, ...todos];
+    this.setState({ todos: newTodo })
+  }
+  updateTodo = (id, done) => {
+    const { todos } = this.state;
+    const newTodo = todos.map(v => {
+      if (id === v.id) return { ...v, done }
+      else return v
+    })
+    this.setState({ todos: newTodo })
+  }
+  deleteTodo = (id) => {
+    const { todos } = this.state;
+    const newTodo = todos.filter(v => {
+      return v.id !== id;
+    })
+    this.setState({ todos: newTodo })
   }
   render() {
     const { todos } = this.state
     return (
       <div className="todo-container">
-        <Header addTodo={this.addTodo}/>
-        <List todos={todos} />
+        <Header addTodo={this.addTodo} />
+        <List todos={todos} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} />
         <Footer />
       </div>
     )
