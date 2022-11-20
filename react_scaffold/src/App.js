@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import Hello from "./components/Hello";
+import React, { Component } from 'react'
+import Search from './components/Search'
+import List from './components/List'
 
 export default class App extends Component {
   render() {
     return (
-      <div>
-        <Hello />
+      <div className="container">
+        <Search />
+        <List />
       </div>
     )
   }
