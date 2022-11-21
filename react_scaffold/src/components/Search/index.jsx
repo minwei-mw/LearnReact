@@ -6,13 +6,23 @@ export default class Search extends Component {
     const {
       inputRef: { value: keyword },
     } = this;
-    axios.get(`/api/search/topic?goods_type=0ççç&term=${keyword}`).then(
+    this.props.updateAppState({ isFirst: false, isLoading: true });
+    axios.get(`/api/search/topic?goods_type=0&term=${keyword}`).then(
       (response) => {
         const { hits } = response.data.data;
-        this.props.getPictureList(hits);
+        this.props.updateAppState({
+          isFirst: false,
+          isLoading: false,
+          pictureList: hits,
+        });
       },
       (error) => {
         console.log("失败了", error);
+        this.props.updateAppState({
+          isFirst: false,
+          isLoading: false,
+          errMsg: "请求失败了！",
+        });
       }
     );
   };

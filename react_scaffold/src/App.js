@@ -3,17 +3,17 @@ import Search from './components/Search'
 import List from './components/List'
 
 export default class App extends Component {
-  state = { pictureList: [] }
+  state = { pictureList: [], isFirst: true, isLoading: false, errMes: "" };
 
-  getPictureList = (params) => {
-    this.setState({ pictureList: params })
+  updateAppState = (params) => {
+    this.setState(params);
   }
 
   render() {
     return (
       <div className="container">
-        <Search getPictureList={this.getPictureList}/>
-        <List pictureList={this.state.pictureList}/>
+        <Search updateAppState={this.updateAppState} />
+        <List  {...this.state}/>
       </div>
     )
   }
