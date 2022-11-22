@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import Pubsub from "pubsub-js";
 import "./index.css";
 
 export default class List extends Component {
+  state = { pictureList: [], isFirst: true, isLoading: false, errMes: "" };
+
+  componentDidMount() {
+    this.token = Pubsub.subscribe("getSearchData", (_, stateObj) => {
+      this.setState(stateObj);
+    });
+  };
+
+  componentWillUnmount() {
+    Pubsub.unsubscribe(this.token);
+  };
+
   render() {
-    const { pictureList, isFirst, errMsg, isLoading } = this.props;
+    const { pictureList, isFirst, errMsg, isLoading } = this.state;
     return (
       <div className="row">
         {isFirst ? (

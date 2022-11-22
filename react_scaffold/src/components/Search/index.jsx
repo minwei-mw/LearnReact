@@ -1,24 +1,24 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Pubsub from "pubsub-js";
 
 export default class Search extends Component {
   handleSearch = () => {
     const {
       inputRef: { value: keyword },
     } = this;
-    this.props.updateAppState({ isFirst: false, isLoading: true });
+    Pubsub.publish("getSearchData", { isFirst: false, isLoading: true });
     axios.get(`/api/search/topic?goods_type=0&term=${keyword}`).then(
       (response) => {
         const { hits } = response.data.data;
-        this.props.updateAppState({
+        Pubsub.publish("getSearchData", {
           isFirst: false,
           isLoading: false,
           pictureList: hits,
         });
       },
       (error) => {
-        console.log("失败了", error);
-        this.props.updateAppState({
+        Pubsub.publish("getSearchData", {
           isFirst: false,
           isLoading: false,
           errMsg: "请求失败了！",
