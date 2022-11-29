@@ -1,30 +1,55 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Pubsub from "pubsub-js";
 
 export default class Search extends Component {
-  handleSearch = () => {
+  handleSearch = async () => {
     const {
       inputRef: { value: keyword },
     } = this;
     Pubsub.publish("getSearchData", { isFirst: false, isLoading: true });
-    axios.get(`/api/search/topic?goods_type=0&term=${keyword}`).then(
-      (response) => {
-        const { hits } = response.data.data;
+
+    // fetch发送网络请求 （未优化）
+    /*  fetch(`/api/search/topic?goods_type=0&term=${keyword}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        const { hits } = response.data;
         Pubsub.publish("getSearchData", {
           isFirst: false,
           isLoading: false,
           pictureList: hits,
         });
-      },
-      (error) => {
+      })
+      .catch((error) => {
+        console.log("获取数据失败", error);
         Pubsub.publish("getSearchData", {
           isFirst: false,
           isLoading: false,
           errMsg: "请求失败了！",
         });
-      }
-    );
+      }); */
+
+    // fetch发送网络请求 （未优化）
+    try {
+      const response = await fetch(
+        `/api/search/topic?goods_type=0&term=${keyword}`
+      );
+      const data = await response.json();
+      const { hits } = data.data;
+      Pubsub.publish("getSearchData", {
+        isFirst: false,
+        isLoading: false,
+        pictureList: hits,
+      });
+    } catch (error) {
+      console.log("获取数据失败", error);
+      Pubsub.publish("getSearchData", {
+        isFirst: false,
+        isLoading: false,
+        errMsg: "请求失败了！",
+      });
+    }
   };
 
   handleKeyup = (event) => {
